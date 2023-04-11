@@ -10,8 +10,8 @@ const UserRouter=express.Router()
 UserRouter.post("/signup",async (req,res)=>{
     try {
         const{email,password}=req.body
-        const user=await UserModel.findOne({email})
-        if(user)
+        const user=await UserModel.find({email})
+        if(user.length>0)
         {
             res.status(400).send({"msg":"Please Login already Registered"})
         }
