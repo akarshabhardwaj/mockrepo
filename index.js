@@ -17,6 +17,7 @@ app.use("/bookings", BookingRoute);
 app.listen(process.env.Server_Port, async () => {
     try {
         await connection;
+        console.log(process.env.MongoDb_Url)
         console.log("successfully connected to Database");
     } catch (error) {
         console.log(error.message);
