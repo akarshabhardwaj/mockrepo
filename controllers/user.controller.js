@@ -22,15 +22,18 @@ const RegisterFunction = async (req, res) => {
                 message: 'User already registered',
             });
         }
-        bcrypt.hash(password, 5, function (err, hash) {
-            // Store hash in your password DB.
-            if (err) throw err;
-            else {
-                let guest = new UserModel({ name, email, password: hash });
-                guest.save();
-                res.send({ "msg": "Added User" })
-            }
-        });
+        else {
+            bcrypt.hash(password, 5, function (err, hash) {
+                // Store hash in your password DB.
+                if (err) throw err;
+                else {
+                    let guest = new UserModel({ name, email, password: hash });
+                    guest.save();
+                    res.send({ "msg": "Added User" })
+                }
+            });
+        }
+
 
 
     } catch (error) {
@@ -41,15 +44,15 @@ const RegisterFunction = async (req, res) => {
 const Login = async (req, res) => {
     try {
         let { email, password } = req.body;
-        let user = await UserModel.findOne({ email })
+        let user = await UserModel.find({ email })
         console.log(user)
         console.log(user.password)
-        if (user) {
-            bcrypt.compare(password, user.password, function (err, result) {
+        if (user.length > 0) {
+            bcrypt.compare(password, user[0].password, async function (err, result) {
                 // result == true
                 console.log(result)
                 console.log(err)
-                if (result) {
+                if (result === true) {
                     let token = jwt.sign({ userId: user[0]._id, username: user[0].name, user_email: user[0].email }, process.env.secret_key);
                     res.send({ "token": token, "msg": "Successfully signed in", username: user[0].name })
                 }
