@@ -7,7 +7,9 @@ const BookProperty = async (req, res) => {
         let userData = UserToken(req);
         let Id = userData.userId;
         let name = userData.username;
-        let { place, checkIn, checkOut, phone, price } = req.body
+        let place = userData.place;
+        let price = userData.price;
+        let { checkIn, checkOut, phone } = req.body
         let booking = new BookingModel({ user: Id, place, checkIn, checkOut, name, phone, price })
         booking.save()
         res.send({ "msg": "Booking Successful" });
