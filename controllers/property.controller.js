@@ -28,7 +28,7 @@ const UserProperty = async (req, res) => {
         let userData = UserToken(req);
         let Id = userData.userId;
         console.log(Id)
-        let userproperties = await PropertyModel.find({ user: Id });
+        let userproperties = await PropertyModel.find({ user: Id }).populate("user");
         res.send({ "user": userproperties })
     } catch (error) {
         res.send({ "error": error.message });
