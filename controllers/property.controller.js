@@ -35,4 +35,14 @@ const UserProperty = async (req, res) => {
     }
 }
 
-module.exports = { AddProperty, GetProperty, UserProperty }
+const DeleteUserProperty = async (req, res) => {
+    try {
+        let Id = req.params.id;
+        let data = await PropertyModel.findByIdAndDelete({ _id: Id })
+        res.send({ "msg": "Hosted Property Successfully Removed" })
+    } catch (error) {
+        res.send({ "error": error.message });
+    }
+}
+
+module.exports = { AddProperty, GetProperty, UserProperty, DeleteUserProperty }
